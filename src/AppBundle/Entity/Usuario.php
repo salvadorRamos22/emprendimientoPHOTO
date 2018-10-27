@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Usuario
  *
@@ -24,14 +24,14 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=100)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="apellido", type="string", length=255)
+     * @ORM\Column(name="apellido", type="string", length=100)
      */
     private $apellido;
 
@@ -45,10 +45,34 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="text")
+     * @ORM\Column(name="password", type="string", length=50)
      */
     private $password;
 
+
+/**
+     * One Usuario has Many reserva.
+     * @ORM\OneToMany(targetEntity="reserva", mappedBy="idUsuario")
+     */
+    private $reservas;
+    // ...
+
+    public function __construct() {
+        $this->reservas = new ArrayCollection();
+    }
+
+     /**
+     * One Usuario has Many consulta_de_usuario.
+     * ORM\@OneToMany(targetEntity="consulta_de_usuario", mappedBy="idUsuario")
+     */
+    private $consulta_u;
+    // ...
+
+    public function __construct2() {
+        $this->consulta_u = new ArrayCollection();
+    }
+  
+ 
 
     /**
      * Get id
