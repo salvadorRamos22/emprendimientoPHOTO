@@ -1,3 +1,13 @@
+venta:
+    resource: "@VentaBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+reserva:
+    resource: "@ReservaBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
