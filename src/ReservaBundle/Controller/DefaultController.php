@@ -4,14 +4,17 @@ namespace ReservaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/reserva", name="reservas")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render('ReservaBundle:Default:index.html.twig');
+        return $this->render('reserva/reservaIndex.html.twig',[
+            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+        ]);
     }
 }
