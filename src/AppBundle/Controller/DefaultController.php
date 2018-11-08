@@ -9,22 +9,20 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="admi")
      */ 
     public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('administracion/admiIndex.html.twig',['base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('administracion/admiIndex.html.twig');
     }
 
     /**
-     * @Route("/cliente", name="homepage")
+     * @Route("/cliente", name="cliente")
      */ 
     public function clientesAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('galeria/index.html.twig',['base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('galeria/index.html.twig');
     }
 }
