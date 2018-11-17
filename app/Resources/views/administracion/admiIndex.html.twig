@@ -2,7 +2,9 @@
 
 {% block title %} Seccion de administracion {% endblock %}
 
-
+{% block navbar %}
+{{include('base/menu_general.html.twig')}}
+{% endblock %}
 {% block content %}
 
 <h1>Se programara todo lo que el administrador pueda ver</h1>

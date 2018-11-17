@@ -35,6 +35,13 @@ class fotos
      */
     private $fotoDescripcion;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="estado", type="boolean")
+     */
+    private $estado;
+
 
     /**
      * Get id

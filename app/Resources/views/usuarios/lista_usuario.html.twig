@@ -1,0 +1,40 @@
+{% extends 'base/baseFoto2.html.twig' %}
+
+{% block title %} Listar Usuarios {% endblock %}
+
+{% block navbar%}
+
+{{include('base/menu_general.html.twig')}}
+{% endblock %}
+
+{% block content %}
+
+ <div class="container">
+  <h2><strong>Lista de usuarios</strong></h2>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre usuario</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for usuario in usuarioList %}
+      <tr>
+        <td>{{usuario.nombre}}</td>
+        <td>{{usuario.apellido}}</td>
+        <td>{{usuario.correo}}</td>
+        <td>
+          <a href="" class="btn btn-warning">Editar</a>
+          <a href="" class="btn btn-danger">Eliminar</a>
+        </td>
+
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
