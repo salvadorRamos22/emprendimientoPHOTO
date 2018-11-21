@@ -35,7 +35,7 @@ class informacion_general
      */
     private $texto;
 
-
+//***************************************METODOS***************************************************
     /**
      * Get id
      *
@@ -94,4 +94,3 @@ class informacion_general
         return $this->texto;
     }
 }
-

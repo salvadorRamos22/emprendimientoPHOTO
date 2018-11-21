@@ -21,7 +21,7 @@ class venta
      */
     private $id;
 
-    
+
 
     /**
      * @var \DateTime
@@ -44,7 +44,7 @@ class venta
      */
     private $idReserva;
 
-
+//***************************************METODOS***************************************************
     /**
      * Get id
      *
@@ -55,7 +55,7 @@ class venta
         return $this->id;
     }
 
-   
+
 
     /**
      * Set fechaVenta
@@ -105,4 +105,3 @@ class venta
         return $this->total;
     }
 }
-

@@ -35,9 +35,9 @@ class consulta_de_usuario
      * @ORM\JoinColumn(name="idUsuario_id", referencedColumnName="id")
      */
     private $idUsuario;
-  
 
 
+//***************************************METODOS***************************************************
     /**
      * Get id
      *
@@ -73,4 +73,3 @@ class consulta_de_usuario
     }
 
 }
-

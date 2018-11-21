@@ -35,7 +35,7 @@ class reserva_tipo_servicio
      */
     private $precio;
 
-
+//***************************************METODOS***************************************************
     /**
      * Get id
      *
@@ -94,4 +94,3 @@ class reserva_tipo_servicio
         return $this->precio;
     }
 }
-

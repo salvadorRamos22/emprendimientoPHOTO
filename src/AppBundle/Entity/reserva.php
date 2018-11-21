@@ -56,7 +56,7 @@ class reserva
      * @ORM\OneToOne(targetEntity="venta", mappedBy="idReserva")
      */
     private $ventas;
-
+//***************************************METODOS***************************************************
 
     /**
      * Get id
@@ -116,6 +116,5 @@ class reserva
         return $this->reservaLugar;
     }
 
-    
-}
 
+}

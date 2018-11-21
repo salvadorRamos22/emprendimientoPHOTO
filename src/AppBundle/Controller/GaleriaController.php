@@ -19,11 +19,11 @@ class GaleriaController extends Controller
 
       /**
      * @Route("/cliente/galeria", name="galeria")
-     */ 
+     */
     public function clientesAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('galeria/index.html.twig');
+        return $this->render('galeria/inicio.html.twig');
     }
 
 }

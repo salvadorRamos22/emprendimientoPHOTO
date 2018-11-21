@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * fotos
@@ -10,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="fotos")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\fotosRepository")
  */
-class fotos
-{
+class Foto
+{   //*****************************************ATRIBUTOS*******************************************
     /**
      * @var int
      *
@@ -21,6 +22,15 @@ class fotos
      */
     private $id;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo", type="text")
+     */
+    private $titulo;
+
+
     /**
      * @var string
      *
@@ -28,21 +38,20 @@ class fotos
      */
     private $fotoLink;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="foto_descripcion", type="text")
-     */
-    private $fotoDescripcion;
 
     /**
-     * @var bool
+     * @var int
      *
-     * @ORM\Column(name="estado", type="boolean")
+     * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="fotos")
+     * @ORM\JoinColumn(name="idCategoria", referencedColumnName="id")
      */
-    private $estado;
+    private $idCategoria;
 
 
+
+
+
+//***************************************METODOS***************************************************
     /**
      * Get id
      *
@@ -101,4 +110,3 @@ class fotos
         return $this->fotoDescripcion;
     }
 }
-

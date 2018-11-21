@@ -60,7 +60,7 @@ class Usuario
 
 /**
      * One Usuario has Many reserva.
-     * @ORM\OneToMany(targetEntity="reserva", mappedBy="idUsuario")
+     * @ORM\OneToMany(targetEntity="Reserva", mappedBy="idUsuario")
      */
     private $reservas;
     // ...
@@ -79,8 +79,8 @@ class Usuario
     public function __construct2() {
         $this->consulta_u = new ArrayCollection();
     }
-  
- 
+
+//***************************************METODOS***************************************************
 
     /**
      * Get id
@@ -212,4 +212,3 @@ class Usuario
         return $this->tipoUsuario;
     }
 }
-
