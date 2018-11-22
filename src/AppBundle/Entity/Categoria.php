@@ -57,7 +57,7 @@ class Categoria
     }
 
     /**
-     * Set fotoDescripcion
+     * Set nombreCategoria
      *
      * @param string $fotoDescripcion
      *
@@ -71,7 +71,7 @@ class Categoria
     }
 
     /**
-     * Get fotoDescripcion
+     * Get nombreCategoria
      *
      * @return string
      */
