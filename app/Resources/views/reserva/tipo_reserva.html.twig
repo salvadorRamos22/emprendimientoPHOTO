@@ -1,0 +1,38 @@
+{% extends 'base/baseFoto2.html.twig' %}
+
+{% block title %} Reserva cliente {% endblock %}
+
+{% block navbar%}
+
+{{include('base/menu_general.html.twig')}}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+ <form class="form-control" method="POST">
+  <div class="container">
+  	<div class="form-group">
+ 		<label>Nombre paquete:</label>
+ 		<input type="text" name="nombre" class="form-control">
+ 	</div>
+ 	<div class="form-group">
+ 		<label>Descripcion:</label>
+ 		<input type="text" name="descripcion" class="form-control">
+ 	</div>
+ 	<div class="form-group">
+ 		<label>Precio:</label>
+ 		<input type="number" name="precio" class="form-control">
+ 	</div>
+
+ 	<button type="submit" class="btn btn-success">Guardar</button>
+ 	<a href="" class="btn btn-danger">Cancelar</a>
+  </div>
+ 	
+ </form>
+</div>
+ 
+
+	
+
+{% endblock %}

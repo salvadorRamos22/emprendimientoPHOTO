@@ -1,0 +1,43 @@
+{% extends 'base/baseFoto2.html.twig' %}
+
+{% block title %} Listar Usuarios {% endblock %}
+
+
+{% block navbar%}
+
+{{include('base/menu_general.html.twig')}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Datos de Usuario</th>
+		</tr>
+	</thead>
+</table>
+<table class="table table-striped">
+	<tbody>
+		<tr>
+			<th>Nombre:</th>
+			<th>{{usu_ver.nombre}}</th>
+		</tr>
+		<tr>
+			<th>Apellido:</th>
+			<th>{{usu_ver.apellido}}</th>
+		</tr>
+		<tr>
+			<th>Correo:</th>
+			<th>{{usu_ver.correo}}</th>
+		</tr>
+		<tr>
+			<th>Foto:</th>
+			<th></th>
+		</tr>
+
+	</tbody>
+</table>
+</div>
+{% endblock %}

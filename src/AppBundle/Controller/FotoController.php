@@ -10,18 +10,14 @@ use AppBundle\Entity\Foto;
 class FotoController extends Controller
 {
 
-    /**
-     * @Route("/Galeria/{zona}")
-     */
+    
     public function indexAction(Request $request,$zona="")
     {
         // replace this example code with whatever you need
         return $this->render('administracion/admiIndex.html.twig');
     }
 
-    /**
-     * @Route("/lista_usuario", name="usuarioList")
-     */
+  
     public function usuariosAction(Request $request)
     {
 
@@ -33,12 +29,10 @@ class FotoController extends Controller
 
 
 
-    /**
-     * @Route("/login", name="loguear")
-     */
+  
     public function loginAction(Request $request)
     {
-        $this->crearRegistroBase();
+       
 
         if($request->getMethod()=="POST")
         {
@@ -76,9 +70,7 @@ class FotoController extends Controller
         return $this->render('usuarios/login.html.twig');
     }
 
-    /**
-     * @Route("/sesionF", name="logout")
-     */
+    
     public function logoutAction(Request $request){
         $session = $request->getSession();
         $session->clear();
@@ -87,9 +79,7 @@ class FotoController extends Controller
     }
 
 
-    /**
-     * @Route("/registrar", name="registrar")
-     */
+
     public function registerAction(Request $request)
     {
         if($request->getMethod()=="POST")
@@ -121,9 +111,6 @@ class FotoController extends Controller
 
 
 
-    /**
-     * @Route("/cliente/principal", name="cliente")
-     */
     public function clienteAction(Request $request){
 
 

@@ -60,7 +60,7 @@ class Usuario
 
 /**
      * One Usuario has Many reserva.
-     * @ORM\OneToMany(targetEntity="Reserva", mappedBy="idUsuario")
+     * @ORM\OneToMany(targetEntity="reserva", mappedBy="idUsuario")
      */
     private $reservas;
     // ...

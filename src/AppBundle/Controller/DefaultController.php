@@ -27,7 +27,7 @@ class DefaultController extends Controller
            $em = $this->getDoctrine()->getEntityManager();
            $em->persist($registrar);
            $flush = $em->flush(); 
-        }      
+        }    
         
         return 0;
     }
@@ -42,7 +42,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/lista_usuario", name="usuarioList")
+     * @Route("/admi/lista_usuario", name="usuarioList")
      */
     public function usuariosAction(Request $request)
     {
@@ -53,6 +53,30 @@ class DefaultController extends Controller
         return $this->render('usuarios/lista_usuario.html.twig',['usuarioList'=>$usuarios]);
     }
 
+
+    /**
+     * @Route("/admi/ver_usuario/{id}", name="verUsuario")
+     */
+    public function verusuarioAction(Request $request,$id){
+        $em = $this->getDoctrine()->getEntityManager();
+        $usuario = $em->getRepository('AppBundle:Usuario')->find($id);
+
+        return $this->render('usuarios/usuario_ver.html.twig',['usu_ver'=>$usuario]);
+
+    }
+
+    /**
+     * @Route("/admi/eliminar_usuario/{id}", name="eliminarUsuario")
+     */
+    public function eliminarusuarioAction(Request $request,$id){
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $usuario = $em->getRepository('AppBundle:Usuario')->find($id);
+        $em->remove($usuario);
+        $em->flush();
+        return $this->redirect($this->generateUrl('usuarioList'));
+
+    }
   
 
     /**

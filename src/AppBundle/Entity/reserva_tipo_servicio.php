@@ -24,7 +24,14 @@ class reserva_tipo_servicio
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=100)
+     * @ORM\Column(name="nombre", type="string", length=100)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=250)
      */
     private $descripcion;
 
@@ -44,6 +51,30 @@ class reserva_tipo_servicio
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $descripcion
+     *
+     * @return reserva_tipo_servicio
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
     }
 
     /**
