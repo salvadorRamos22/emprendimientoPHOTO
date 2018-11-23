@@ -1,0 +1,40 @@
+{% extends 'base/baseFoto2.html.twig' %}
+
+{% block title %} Listar Tipos de reserva {% endblock %}
+
+{% block navbar%}
+
+{{include('base/menu_general.html.twig')}}
+{% endblock %}
+
+{% block content %}
+
+ <div class="container">
+  <h2><strong>Lista de tipos de reserva</strong></h2> 
+  <a href="{{ path('reserva_tipo')}}" class="btn btn-info">Nuevo</a>           
+  <table class="table table-striped">
+    <thead>
+      <tr>
+       
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for listadoTipo in listado %}
+      <tr>
+        <td>{{listadoTipo.nombre}}</td>
+        <td>{{listadoTipo.precio}}</td>
+        <td>
+          <a href="{{ path('eliminarTipoReserva',{'id':listadoTipo.id}) }}" class="btn btn-warning">Eliminar</a>
+          <a href="{{ path('verTipoReserva',{'id':listadoTipo.id}) }}" class="btn btn-success">Ver</a>
+        </td>
+
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

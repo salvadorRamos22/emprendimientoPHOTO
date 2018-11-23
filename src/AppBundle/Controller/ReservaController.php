@@ -50,4 +50,39 @@ class ReservaController extends Controller
     	}
     	return $this->render('reserva/tipo_reserva.html.twig');
     }
+
+
+    /**
+     * @Route("/admi/listado_tipo_reserva", name="reserva_tipoList")
+     */
+    public function listTporeservAction(Request $request){
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$listado = $em->getRepository('AppBundle:reserva_tipo_servicio')->findAll();
+
+    	return $this->render('reserva/listado_tipo_reserva.html.twig',['listado'=>$listado]);
+    }
+
+     /**
+     * @Route("/admi/eliminar/{id}", name="eliminarTipoReserva")
+     */
+    public function eliminarTipoReservaAction(Request $request,$id){
+
+    	$em = $this->getDoctrine()->getEntityManager();
+        $tipo = $em->getRepository('AppBundle:reserva_tipo_servicio')->find($id);
+        $em->remove($tipo);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('reserva_tipo'));
+    }
+
+
+     /**
+     * @Route("/admi/ver_tipo/{id}", name="verTipoReserva")
+     */
+    public function verTipoReserva(Request $request,$id){
+    	$em = $this->getDoctrine()->getEntityManager();
+        $tipo = $em->getRepository('AppBundle:reserva_tipo_servicio')->find($id);
+
+        return $this->render('reserva/ver_tipoReserva.html.twig',['tipo_ver'=>$tipo]);
+    }
 }

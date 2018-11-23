@@ -13,20 +13,20 @@
  <form class="form-control" method="POST">
   <div class="container">
   	<div class="form-group">
- 		<label>Nombre paquete:</label>
+ 		<label><strong> Nombre paquete:</strong></label>
  		<input type="text" name="nombre" class="form-control">
  	</div>
  	<div class="form-group">
- 		<label>Descripcion:</label>
+ 		<label><strong> Descripcion:</strong></label>
  		<input type="text" name="descripcion" class="form-control">
  	</div>
  	<div class="form-group">
- 		<label>Precio:</label>
+ 		<label><strong> Precio:</strong></label>
  		<input type="number" name="precio" class="form-control">
  	</div>
 
  	<button type="submit" class="btn btn-success">Guardar</button>
- 	<a href="" class="btn btn-danger">Cancelar</a>
+ 	<a href="{{path('reserva_tipoList')}}" class="btn btn-danger">Cancelar</a>
   </div>
  	
  </form>
