@@ -13,22 +13,22 @@
 
 <div class="container gallery-container">
 
-    <h1>Lista de Categorias</h1>
+    <h1>Galería de Fotos</h1>
 
     <p class="page-description text-center">Una muestra sobre la calidad del trabajo</p>
 
     <div class="tz-gallery">
 
         <div class="row">
-          {% for categoria in listado %}
+          {% for foto in listado %}
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <a class="lightbox" href="{{ path('galeria_categoria',{'categoria':categoria.NombreCategoria}) }}">
-                        <img src="{{ asset('static/assets/images/'~ categoria.NombreCategoria~'.jpg')}}">
+                    <a class="lightbox" href="{{ asset('uploads/images/' ~ foto.fotoLink)}}">
+                        <img src="{{ asset('uploads/images/' ~ foto.fotoLink)}}">
                     </a>
                     <div class="caption">
-                        <h3>{{categoria.NombreCategoria}}</h3>
-                        <p></p>
+                        <h3>{{foto.titulo}}</h3>
+                        <p>{{foto.fotoDescripcion}}</p>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,20 @@
+{% extends 'base/baseGaleria.html.twig' %}
+
+
+{% block title %}Listado de fotos{% endblock %}
+
+{% block navbar %}
+{{include('base/menu_general_cliente.html.twig')}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+{{form_start(form)}}
+{{form_widget(form)}}
+<div class="form-group">
+{{form_end(form)}}
+</div>
+
+{% endblock %}

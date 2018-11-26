@@ -1,0 +1,63 @@
+{% extends 'base/baseGaleria.html.twig' %}
+
+
+{% block title %}Listado de fotos{% endblock %}
+
+{% block navbar %}
+{{include('base/menu_general_cliente.html.twig')}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container" align="center">
+
+    <h1>Listado de Fotos</h1>
+
+    <p class="page-description text-center">Una muestra sobre la calidad del trabajo</p>
+
+
+        <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+           <table class="table table-striped table-hover table-bordered">
+            <thead>
+              <tr>
+
+                <th class="text-center">Título de Foto</th>
+                <th class="text-center">Descripción</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for foto in listado %}
+                  <tr>
+
+                    <td class="text-center"> {{foto.titulo}} </td>
+                    <td class="text-center"> {{foto.fotoDescripcion}} </td>
+                    <td>
+
+                      <a href="{{ path('foto_edit',{'id':foto.id}) }}" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar</a>
+
+                  <a href="{{ asset('uploads/images/' ~ foto.fotoLink)}}" class="btn btn-success btn-sm" target="_blank">
+                    <span class="glyphicon glyphicon-eye-open"></span>Ver</a>
+
+              <a href="{{ path('foto_delete',{'id':foto.id}) }}" class="btn btn-danger">Eliminar</a>
+
+                    </td>
+                  </tr>
+        {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+
+
+
+        </div>
+        </div>
+
+
+</div>
+
+{% endblock %}

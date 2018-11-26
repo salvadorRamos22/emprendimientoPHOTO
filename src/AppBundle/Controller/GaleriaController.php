@@ -3,27 +3,33 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Categoria;
+use AppBundle\Entity\Foto;
 
 class GaleriaController extends Controller
 {
-    /**
-     * @Route("/venta")
-     */
-    public function indexAction()
-    {
-        return $this->render('venta/indexVenta.html.twig');
-    }
-
-
       /**
      * @Route("/cliente/galeria", name="galeria")
      */
     public function clientesAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('galeria/inicio.html.twig');
+      $listado=$this->getDoctrine()->getRepository(Categoria::class)->findAll();
+
+        return $this->render('galeria/inicio.html.twig', array('listado' => $listado));
     }
 
+    /**
+   * @Route("/cliente/galeria/{categoria}", name="galeria_categoria")
+   */
+  public function galeriaFiltradaAction(Request $request,$categoria)
+  {
+    $repository = $this->getDoctrine()->getRepository(Categoria::class);
+    $categoria = $repository->findOneBy(array('nombreCategoria' => $categoria));
+    $repository = $this->getDoctrine()->getRepository(Foto::class);
+    $listado = $repository->findBy(array('idCategoria' => $categoria->getId()));
+
+      return $this->render('galeria/categoriaGaleria.html.twig', array('listado' => $listado));
+  }
 }

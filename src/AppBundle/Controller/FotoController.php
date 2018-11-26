@@ -2,119 +2,107 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use AppBundle\Entity\Foto;
+use AppBundle\Entity\Categoria;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextArea;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FotoController extends Controller
 {
 
-    
-    public function indexAction(Request $request,$zona="")
+      /**
+     * @Route("/foto", name="foto_index")
+     */
+    public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('administracion/admiIndex.html.twig');
+      $listado=$this->getDoctrine()->getRepository('AppBundle:Foto')->findAll();
+
+
+        return $this->render('fotos/listadoFotos.html.twig', array('listado' => $listado));
     }
 
-  
-    public function usuariosAction(Request $request)
+    /**
+    * @Route("/foto/create", name="foto_create")
+    */
+    public function createAction(Request $request)
     {
+      //consulta las categorias para crear una lista que se usará para cargar en el formulario (ChoiceType)
+      $listado=$this->getDoctrine()->getRepository('AppBundle:Categoria')->findAll();
+      foreach($listado as $ob){
+        $lista[$ob->getId()]=$ob->getNombreCategoria();
+      }
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $usuarios = $em->getRepository('AppBundle:Usuario')->findBy(array('tipoUsuario'=>'cliente'));
+      //se crea el formulario
+      $foto=new Foto;
+      $form=$this->createFormBuilder($foto)
+      ->add('titulo',TextType::class,array('label'=>'Titulo de la foto','attr' => array('class'=>'form-control','style'=>'margin-bottom:15px')))
+      ->add('fotoDescripcion',TextType::class,array('label'=>'Descripción','attr' => array('class'=>'form-control','style'=>'margin-bottom:15px')))
+      ->add('fotoLink',FileType::class,array('label'=>'Agregar la Fotografía','attr' => array('class'=>'form-control','style'=>'margin-bottom:15px')))
+      ->add('idcategoria',ChoiceType::class,array('label'=>'Seleccione una categoría','placeholder'=>false,
+      'choices'=>array_flip($lista),
+      'attr' => array('class'=>'form-control','style'=>'margin-bottom:15px')))
+      ->add('Guardar',SubmitType::class,array('attr' => array('class'=>'btn btn-success btn-sm','style'=>'margin-bottom:15px')))
+      ->getForm();
+      $form->handleRequest($request);
 
-        return $this->render('usuarios/lista_usuario.html.twig',['usuarioList'=>$usuarios]);
+      //Después de llenar el formulario
+       if ($form->isSubmitted() && $form->isValid()) {
+         $foto->setTitulo($form['titulo']->getData());
+         $foto->setFotoDescripcion($form['fotoDescripcion']->getData());
+         $cat = $this->getDoctrine()->getRepository(Categoria::class)->find($form['idcategoria']->getData());
+         $foto->setIdCategoria($cat);
+
+         /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+          $file = $foto->getFotoLink();
+          $filename= md5(uniqid()).'.'.$file->guessExtension();
+          $file->move($this->getParameter('image_directory'),$filename);
+
+
+          $foto->setFotoLink($filename);
+
+       $em=$this->getDoctrine()->getManager();
+         $em->persist($foto);
+         $em->flush();
+         $this->addFlash('notice','Foto Agregada con éxito');
+        return $this->redirectToRoute('foto_index');
+       }//fin
+
+      return $this->render('fotos/agregarFoto.html.twig',array('form' => $form->createView()));
+
     }
 
 
+    /**
+   * @Route("/foto/edit/{id}", name="foto_edit")
+   */
+  public function editAction(Request $request,$id)
+  {
 
-  
-    public function loginAction(Request $request)
-    {
-       
-
-        if($request->getMethod()=="POST")
-        {
-            $email = $request->get('email');
-            $password = $request->get('password');
-            $user = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findOneBy(array('correo'=>$email));
-
-            if($user)
-            {
-                $hash = $user->getPassword();
-                if(password_verify($password,$hash))
-                {
-                    $session = $request->getSession();
-                    $session->set("id",$user->getId());
-                    $session->set("nombre",$user->getNombre());
-
-                    $var = $user->gettipoUsuario();
-                    if($var == 'cliente'){
-                        return $this->redirect($this->generateUrl('cliente'));
-                    }else{
-                        return $this->redirect($this->generateUrl('admi'));
-                    }
-                }else
-                {
-                    $this->get('session')->getFlashBag()->add('mensaje','El Password es incorrecto');
-                    return $this->redirect($this->generateUrl('loguear'));
-                }
-            }else
-            {
-                $this->get('session')->getFlashBag()->add('mensaje','El correo es incorrecto');
-                return $this->redirect($this->generateUrl('loguear'));
-            }
-        }
-
-        return $this->render('usuarios/login.html.twig');
-    }
-
-    
-    public function logoutAction(Request $request){
-        $session = $request->getSession();
-        $session->clear();
-        $this->get('session')->getFlashBag()->add('mensaje','Sesion Finalizada');
-        return $this->redirect($this->generateUrl('loguear'));
-    }
+  }
 
 
+/**
+* @Route("/foto/delete/{id}", name="foto_delete")
+*/
+public function deleteAction(Request $request,$id)
+{
+  $entityManager = $this->getDoctrine()->getManager();
+  $foto = $entityManager->getRepository(Foto::class)->find($id);
+  if (!$foto) {
+         throw $this->createNotFoundException(
+             'FOTO NO ENCONTRADA POR ID '.$id
+         );
+     }
 
-    public function registerAction(Request $request)
-    {
-        if($request->getMethod()=="POST")
-            {
-                 $registrar = new Usuario();
-                 $nombre = $request->get('nombre');
-                 $apellido = $request->get('apellido');
-                 $email = $request->get('email');
-                 $password = $request->get('password');
-                 $hash = password_hash($password,PASSWORD_DEFAULT,[15]);
-
-
-                 $registrar->setNombre($nombre);
-                 $registrar->setApellido($apellido);
-                 $registrar->setCorreo($email);
-                 $registrar->setPassword($hash);
-                 $registrar->settipoUsuario("cliente");
-
-                 $em = $this->getDoctrine()->getEntityManager();
-                 $em->persist($registrar);
-                 $flush = $em->flush();
-
-                 return $this->redirectToRoute('loguear');
-            }
-
-
-        return $this->render('usuarios/registrar.html.twig');
-    }
-
-
-
-    public function clienteAction(Request $request){
-
-
-        return $this->render('cliente/cliente_principal.html.twig');
-    }
-
+     $entityManager->remove($foto);
+     $entityManager->flush();
+     return $this->redirectToRoute('foto_index');
+}
 }

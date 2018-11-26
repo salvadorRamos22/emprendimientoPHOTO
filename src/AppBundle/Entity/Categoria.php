@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Categoria
@@ -12,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoriaRepository")
  */
 class Categoria
-{   //*****************************************ATRIBUTOS*******************************************
+{
     /**
      * @var int
      *
@@ -22,30 +21,23 @@ class Categoria
      */
     private $id;
 
-
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="text")
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
     private $nombreCategoria;
-
 
     /**
          * One Categoria has Many Fotos.
          * @ORM\OneToMany(targetEntity="Foto", mappedBy="idCategoria")
          */
         private $fotos;
-        // ...
 
         public function __construct() {
             $this->fotos = new ArrayCollection();
         }
-
-
-
-
-//***************************************METODOS***************************************************
+/***********************************METODOS*****************************
     /**
      * Get id
      *
@@ -59,7 +51,7 @@ class Categoria
     /**
      * Set nombreCategoria
      *
-     * @param string $fotoDescripcion
+     * @param string $nombreCategoria
      *
      * @return Categoria
      */
