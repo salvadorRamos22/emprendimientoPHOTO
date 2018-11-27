@@ -175,5 +175,40 @@ class DefaultController extends Controller
 
         return $this->render('cliente/cliente_principal.html.twig');
     }
+
+
+    //METODOS DE IMPRESION DE RESERVA y RESERVA ADMINISTRADOR
+
+    /**
+     * @Route("/admi/reserva", name="reservas")
+     */
+    public function reservadmiAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $reservas = $em->getRepository('AppBundle:reserva')->findAll();
+        //$fecha = $reservas->getReservaFecha();
+
+        return $this->render('reserva/reserva.html.twig',['listado'=>$reservas]);
+    }
+
+     /**
+     * @Route("/admi/reserva/{id}", name="ver_reservas")
+     */
+    public function vereservAction(Request $request,$id){
+        $em = $this->getDoctrine()->getEntityManager();
+        $reserva = $em->getRepository('AppBundle:reserva')->find($id);
+
+        $tipo = $reserva->getreservaTipoId();
+        $tipoReserva = $em->getRepository('AppBundle:reserva_tipo_servicio')->find($tipo);
+
+        return $this->render('reserva/ver_reserva_admi.html.twig',['reserva'=>$reserva,'tipoReserva'=>$tipoReserva]);
+
+    }
+
+    
+
+
+    
     
 }

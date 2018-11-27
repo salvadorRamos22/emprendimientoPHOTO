@@ -42,6 +42,14 @@ class reserva_tipo_servicio
      */
     private $precio;
 
+
+/**
+     * One reserva_tipo_servicio has Many reserva.
+     * @ORM\OneToMany(targetEntity="reserva", mappedBy="reservaTipoId")
+     */
+
+    private $reservas;
+
 //***************************************METODOS***************************************************
     /**
      * Get id
@@ -51,6 +59,10 @@ class reserva_tipo_servicio
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __toString(){
+        return $this->nombre;
     }
 
     /**

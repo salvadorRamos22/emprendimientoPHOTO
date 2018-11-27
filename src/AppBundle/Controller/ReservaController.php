@@ -10,13 +10,7 @@ use AppBundle\Entity\reserva_tipo_servicio;
 
 class ReservaController extends Controller
 {
-    /**
-     * @Route("/admi/reserva", name="reservas")
-     */
-    public function indexAction(Request $request)
-    {
-        return $this->render('reserva/reserva.html.twig');
-    }
+    
 
     /**
      * @Route("/cliente/reserva", name="reserva_cliente")

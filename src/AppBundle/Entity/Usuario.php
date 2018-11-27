@@ -92,6 +92,10 @@ class Usuario
         return $this->id;
     }
 
+    public function __toString(){
+        return $this->nombre;
+    }
+
     /**
      * Set nombre
      *

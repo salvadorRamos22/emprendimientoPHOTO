@@ -45,7 +45,7 @@ class reserva
 
      /**
      * One reserva has One reserva_tipo_servicio.
-     * @ORM\OneToOne(targetEntity="reserva_tipo_servicio")
+     * @ORM\ManyToOne(targetEntity="reserva_tipo_servicio", inversedBy="reservas")
      * @ORM\JoinColumn(name="reservaTipoId_id", referencedColumnName="id")
      */
     private $reservaTipoId;
@@ -92,6 +92,7 @@ class reserva
         return $this->reservaFecha;
     }
 
+
     /**
      * Set reservaLugar
      *
@@ -116,5 +117,54 @@ class reserva
         return $this->reservaLugar;
     }
 
+
+    /**
+     * Set idUsuario
+     *
+     * @param string $idUsuario
+     *
+     * @return string
+     */
+    public function setidUsuario($idUsuario)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return integer
+     */
+    public function getidUsuario()
+    {
+        return $this->idUsuario;
+    }
+
+
+     /**
+     * Set reservaTipoId
+     *
+     * @param string $reservaTipoId
+     *
+     * @return reservaTipoId
+     */
+    public function setreservaTipoId($reservaTipoId)
+    {
+        $this->reservaTipoId = $reservaTipoId;
+
+        return $this;
+    }
+
+    /**
+     * Get reservaTipoId
+     *
+     * @return string
+     */
+    public function getreservaTipoId()
+    {
+        return $this->reservaTipoId;
+    }
 
 }
