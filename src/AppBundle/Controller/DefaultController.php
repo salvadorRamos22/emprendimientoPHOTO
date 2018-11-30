@@ -37,8 +37,18 @@ class DefaultController extends Controller
      */ 
     public function indexAction(Request $request)
     {
+        $session = $request->getSession();
+
+        if($session->has("id")){
+
+         return $this->render('administracion/admiIndex.html.twig');   
+        }
+        else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
         // replace this example code with whatever you need
-        return $this->render('administracion/admiIndex.html.twig');
+        
     }
 
     /**
@@ -100,7 +110,7 @@ class DefaultController extends Controller
                     $session = $request->getSession();
                     $session->set("id",$user->getId());
                     $session->set("nombre",$user->getNombre());
-
+                    $session->set("tipoUsuario",$user->gettipoUsuario());
                     $var = $user->gettipoUsuario();
                     if($var == 'cliente'){
                         return $this->redirect($this->generateUrl('cliente'));
@@ -171,9 +181,14 @@ class DefaultController extends Controller
      * @Route("/cliente/principal", name="cliente")
      */
     public function clienteAction(Request $request){
-
-
-        return $this->render('cliente/cliente_principal.html.twig');
+        $session = $request->getSession();
+        if($session->has("id")){
+           return $this->render('cliente/cliente_principal.html.twig'); 
+        }else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
+        
     }
 
 
