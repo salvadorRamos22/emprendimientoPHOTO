@@ -22,10 +22,20 @@ class FotoController extends Controller
      */
     public function indexAction(Request $request)
     {
-      $listado=$this->getDoctrine()->getRepository('AppBundle:Foto')->findAll();
 
+      $session = $request->getSession();
 
-        return $this->render('fotos/listadoFotos.html.twig', array('listado' => $listado));
+        if($session->has("id")){
+
+          $listado=$this->getDoctrine()->getRepository('AppBundle:Foto')->findAll();
+          return $this->render('fotos/listadoFotos.html.twig', array('listado' => $listado));
+
+        }else{
+
+          $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+          return $this->redirect($this->generateUrl('loguear'));
+        }
+        
     }
 
     /**
@@ -33,6 +43,11 @@ class FotoController extends Controller
     */
     public function createAction(Request $request)
     {
+
+      $session = $request->getSession();
+
+        if($session->has("id")){
+
       //consulta las categorias para crear una lista que se usará para cargar en el formulario (ChoiceType)
       $listado=$this->getDoctrine()->getRepository('AppBundle:Categoria')->findAll();
       foreach($listado as $ob){
@@ -76,6 +91,13 @@ class FotoController extends Controller
 
       return $this->render('fotos/agregarFoto.html.twig',array('form' => $form->createView()));
 
+        }else{
+
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
+      
+
     }
 
 
@@ -93,16 +115,28 @@ class FotoController extends Controller
 */
 public function deleteAction(Request $request,$id)
 {
-  $entityManager = $this->getDoctrine()->getManager();
-  $foto = $entityManager->getRepository(Foto::class)->find($id);
-  if (!$foto) {
-         throw $this->createNotFoundException(
-             'FOTO NO ENCONTRADA POR ID '.$id
-         );
-     }
 
-     $entityManager->remove($foto);
-     $entityManager->flush();
-     return $this->redirectToRoute('foto_index');
-}
+     $session = $request->getSession();
+
+      if($session->has("id")){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $foto = $entityManager->getRepository(Foto::class)->find($id);
+        if (!$foto) {
+             throw $this->createNotFoundException(
+             'FOTO NO ENCONTRADA POR ID '.$id
+             );
+         }
+
+         $entityManager->remove($foto);
+         $entityManager->flush();
+         return $this->redirectToRoute('foto_index');
+      
+      }else{
+
+          $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+          return $this->redirect($this->generateUrl('loguear'));
+      }
+    
+  }
 }

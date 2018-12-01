@@ -15,9 +15,19 @@ class GaleriaController extends Controller
      */
     public function clientesAction(Request $request)
     {
-      $listado=$this->getDoctrine()->getRepository(Categoria::class)->findAll();
+      $session = $request->getSession();
 
-        return $this->render('galeria/inicio.html.twig', array('listado' => $listado));
+        if($session->has("id")){
+          $listado=$this->getDoctrine()->getRepository(Categoria::class)->findAll();
+
+           return $this->render('galeria/inicio.html.twig', array('listado' => $listado));
+
+        }else{
+
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
+      
     }
 
     /**
@@ -25,11 +35,21 @@ class GaleriaController extends Controller
    */
   public function galeriaFiltradaAction(Request $request,$categoria)
   {
-    $repository = $this->getDoctrine()->getRepository(Categoria::class);
-    $categoria = $repository->findOneBy(array('nombreCategoria' => $categoria));
-    $repository = $this->getDoctrine()->getRepository(Foto::class);
-    $listado = $repository->findBy(array('idCategoria' => $categoria->getId()));
 
-      return $this->render('galeria/categoriaGaleria.html.twig', array('listado' => $listado));
+    $session = $request->getSession();
+
+        if($session->has("id")){
+          $repository = $this->getDoctrine()->getRepository(Categoria::class);
+          $categoria = $repository->findOneBy(array('nombreCategoria' => $categoria));
+          $repository = $this->getDoctrine()->getRepository(Foto::class);
+          $listado = $repository->findBy(array('idCategoria' => $categoria->getId()));
+
+          return $this->render('galeria/categoriaGaleria.html.twig', array('listado' => $listado));
+
+        }else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
+    
   }
 }
