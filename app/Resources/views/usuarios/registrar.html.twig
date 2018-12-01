@@ -65,6 +65,12 @@
 										<i class="fa fa-twitter"></i>
 									</a>
                                 </div>
+                                {% for flashMessage in app.session.flashbag.get('mensaje')%}
+									<span class="alert-success">
+										{{flashMessage}}
+										<hr/>
+									</span>
+                                {% endfor %}
                                 <form class="register-form" method="POST">
                                 	<label>Nombre</label>
                                     <input type="text" class="form-control" name ="nombre"placeholder="Email">

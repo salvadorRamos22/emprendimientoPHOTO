@@ -33,7 +33,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/", name="admi")
+     * @Route("/admi", name="admi")
      */ 
     public function indexAction(Request $request)
     {
@@ -46,9 +46,7 @@ class DefaultController extends Controller
         else{
             $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
             return $this->redirect($this->generateUrl('loguear'));
-        }
-        // replace this example code with whatever you need
-        
+        }        
     }
 
     /**
@@ -56,11 +54,18 @@ class DefaultController extends Controller
      */
     public function usuariosAction(Request $request)
     {
-        
-        $em = $this->getDoctrine()->getEntityManager();
-        $usuarios = $em->getRepository('AppBundle:Usuario')->findBy(array('tipoUsuario'=>'cliente'));
+        $session = $request->getSession();
+        if($session->has("id")){
+            $em = $this->getDoctrine()->getEntityManager();
+            $usuarios = $em->getRepository('AppBundle:Usuario')->findBy(array('tipoUsuario'=>'cliente'));
 
-        return $this->render('usuarios/lista_usuario.html.twig',['usuarioList'=>$usuarios]);
+            return $this->render('usuarios/lista_usuario.html.twig',['usuarioList'=>$usuarios]);
+        }else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+
+        }
+        
     }
 
 
@@ -68,11 +73,16 @@ class DefaultController extends Controller
      * @Route("/admi/ver_usuario/{id}", name="verUsuario")
      */
     public function verusuarioAction(Request $request,$id){
-        $em = $this->getDoctrine()->getEntityManager();
-        $usuario = $em->getRepository('AppBundle:Usuario')->find($id);
+        $session = $request->getSession();
+        if($session->has("id")){
+            $em = $this->getDoctrine()->getEntityManager();
+            $usuario = $em->getRepository('AppBundle:Usuario')->find($id);
 
-        return $this->render('usuarios/usuario_ver.html.twig',['usu_ver'=>$usuario]);
-
+            return $this->render('usuarios/usuario_ver.html.twig',['usu_ver'=>$usuario]);
+        }else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
     }
 
     /**
@@ -80,17 +90,22 @@ class DefaultController extends Controller
      */
     public function eliminarusuarioAction(Request $request,$id){
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $usuario = $em->getRepository('AppBundle:Usuario')->find($id);
-        $em->remove($usuario);
-        $em->flush();
-        return $this->redirect($this->generateUrl('usuarioList'));
-
+        $session = $request->getSession();
+        if($session->has("id")){
+            $em = $this->getDoctrine()->getEntityManager();
+            $usuario = $em->getRepository('AppBundle:Usuario')->find($id);
+            $em->remove($usuario);
+            $em->flush();
+            return $this->redirect($this->generateUrl('usuarioList'));
+        }else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
     }
   
 
     /**
-     * @Route("/login", name="loguear")
+     * @Route("/", name="loguear")
      */
     public function loginAction(Request $request)
     {   
@@ -150,25 +165,33 @@ class DefaultController extends Controller
     {
         if($request->getMethod()=="POST")
             {
-                 $registrar = new Usuario();
-                 $nombre = $request->get('nombre');
-                 $apellido = $request->get('apellido');
-                 $email = $request->get('email');
-                 $password = $request->get('password');
-                 $hash = password_hash($password,PASSWORD_DEFAULT,[15]);
+                $email = $request->get('email');
+                $existe = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findOneBy(array('correo'=>$email));
+                if($existe){
+                    $this->get('session')->getFlashBag()->add('mensaje','El Email ya existe');
+                    return $this->redirect($this->generateUrl('registrar'));
+                }else{
+                    $registrar = new Usuario();
+                    $nombre = $request->get('nombre');
+                    $apellido = $request->get('apellido');
+                 
+                    $password = $request->get('password');
+                    $hash = password_hash($password,PASSWORD_DEFAULT,[15]);
 
 
-                 $registrar->setNombre($nombre);
-                 $registrar->setApellido($apellido);
-                 $registrar->setCorreo($email);
-                 $registrar->setPassword($hash);
-                 $registrar->settipoUsuario("cliente");
+                    $registrar->setNombre($nombre);
+                    $registrar->setApellido($apellido);
+                    $registrar->setCorreo($email);
+                    $registrar->setPassword($hash);
+                    $registrar->settipoUsuario("cliente");
 
-                 $em = $this->getDoctrine()->getEntityManager();
-                 $em->persist($registrar);
-                 $flush = $em->flush();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($registrar);
+                    $flush = $em->flush();
 
-                 return $this->redirectToRoute('loguear');
+                    return $this->redirectToRoute('loguear');
+                }                
+                 
             }
         
        
@@ -199,31 +222,39 @@ class DefaultController extends Controller
      */
     public function reservadmiAction(Request $request)
     {
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $reservas = $em->getRepository('AppBundle:reserva')->findAll();
-        //$fecha = $reservas->getReservaFecha();
-
-        return $this->render('reserva/reserva.html.twig',['listado'=>$reservas]);
+        $session = $request->getSession();
+        if($session->has("id")){
+            $em = $this->getDoctrine()->getEntityManager();
+            $reservas = $em->getRepository('AppBundle:reserva')->findAll();
+            return $this->render('reserva/reserva.html.twig',['listado'=>$reservas]);
+        }else{
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
+        
     }
 
      /**
      * @Route("/admi/reserva/{id}", name="ver_reservas")
      */
     public function vereservAction(Request $request,$id){
-        $em = $this->getDoctrine()->getEntityManager();
-        $reserva = $em->getRepository('AppBundle:reserva')->find($id);
 
-        $tipo = $reserva->getreservaTipoId();
-        $tipoReserva = $em->getRepository('AppBundle:reserva_tipo_servicio')->find($tipo);
+        $session = $request->getSession();
+        if($session->has("id")){    
+            $em = $this->getDoctrine()->getEntityManager();
+            $reserva = $em->getRepository('AppBundle:reserva')->find($id);
 
-        return $this->render('reserva/ver_reserva_admi.html.twig',['reserva'=>$reserva,'tipoReserva'=>$tipoReserva]);
+            $tipo = $reserva->getreservaTipoId();
+            $tipoReserva = $em->getRepository('AppBundle:reserva_tipo_servicio')->find($tipo);
+
+            return $this->render('reserva/ver_reserva_admi.html.twig',['reserva'=>$reserva,'tipoReserva'=>$tipoReserva]);
+        }else{
+
+            $this->get('session')->getFlashBag()->add('mensaje','Debe estar Logueado para este contenido');
+            return $this->redirect($this->generateUrl('loguear'));
+        }
+        
 
     }
-
-    
-
-
-    
-    
+       
 }

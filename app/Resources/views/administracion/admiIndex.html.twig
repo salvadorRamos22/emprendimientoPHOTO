@@ -6,8 +6,10 @@
 {{include('base/menu_general.html.twig')}}
 {% endblock %}
 {% block content %}
-
-<h1>Se programara todo lo que el administrador pueda ver</h1>
+<div class="container">
+	<h1><center> Bienvenido {{app.session.get('nombre')}}</center></h1>
+	
+</div>
 
 
 {% endblock %}

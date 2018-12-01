@@ -40,6 +40,7 @@
       </tr>
     </thead>
     <tbody>
+    	<input type="text" id="tipoReserva2" value="{{reserva.reservaTipoId}}" style="visibility:hidden">
       <tr>
         <td>{{reserva.reservaTipoId}}</td>
         <td>{{tipoReserva.precio}}</td>
@@ -52,10 +53,18 @@
 <button id="cmd" class="btn btn-success">Impresion de Factura</button>
 </div>
 <script type="text/javascript">
+
+var columna2 = ['Fecha:{{reserva.reservaFecha| date('d/m/y H:i:s')}}','Nombre:{{reserva.idUsuario}}'];
+var rows2 = [1,''];
+var tipoReserva = document.getElementById("tipoReserva2").value;
 var columunas = ['Tipo','Precio','Total'];
 var rows = [
-	[1,"{{reserva.reservaTipoId}}","{{tipoReserva.precio}}","{{tipoReserva.precio}}"]
+	['{{reserva.reservaTipoId}}',"{{tipoReserva.precio}}","{{tipoReserva.precio}}"],
+	["","",""],
+	["","",""],
+	["","",""],
 ];
+
 var doc = new jsPDF();
 var specialElementHandlers = {
     '#cmd': function (element, renderer) {
@@ -68,10 +77,16 @@ $('#cmd').click(function () {
 	doc.setTextColor(0,85,136);
 	doc.setFont("helvetica");
 	doc.setFontType("bold");
-	
-	doc.autoTable(columunas, rows);
-    
-    
+	doc.text(80, 10, 'FACTURA COMERCIAL ');
+	doc.text(90,15,'Detalle Pedido');
+	doc.text(85,20,'JESTRADAFOTO');
+
+	doc.autoTable(columna2,rows2,{
+    	margin: {top: 30}
+	});
+	doc.autoTable(columunas, rows,{
+		margin: {top: 40}
+	}); 
     doc.save('FacturaVenta.pdf');
 });
 </script>
