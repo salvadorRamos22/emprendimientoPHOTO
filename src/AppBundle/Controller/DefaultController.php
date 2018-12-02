@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Usuario;
+use AppBundle\Entity\Categoria;
+
 
 class DefaultController extends Controller
 {
@@ -32,11 +34,17 @@ class DefaultController extends Controller
         return 0;
     }
 
-    public function crearCategorias(){
-
+    public function crearCategoriasBase(){
+        $array = array("Premiaciones","Viajes","Moda y Estilo de vida","Bodas","Celebraciones");
         $em = $this->getDoctrine()->getEntityManager();
         $categoria = $em->getRepository('AppBundle:Categoria')->findAll();
         if(!$categoria){
+            foreach ($array as $key) {
+                $cate = new Categoria();
+                $cate->setNombreCategoria($key);
+                $em->persist($cate);
+                $flush = $em->flush();
+            }
             
         }
     }
@@ -119,6 +127,7 @@ class DefaultController extends Controller
     public function loginAction(Request $request)
     {   
         $this->crearRegistroBase();
+        $this->crearCategoriasBase();
 
         if($request->getMethod()=="POST")
         {
