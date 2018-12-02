@@ -39,7 +39,17 @@ class ReservaController extends Controller
         }
         
     }
+/**
+     * @Route("/cliente/eliminar/{id}", name="eliminarReserva")
+     */
+    public function eliminarReservaAction(Request $request,$id){
 
+    	$em = $this->getDoctrine()->getEntityManager();
+        $tipo = $em->getRepository('AppBundle:reserva')->find($id);
+        $em->remove($tipo);
+        $em->flush();
+        return $this->redirect($this->generateUrl('reserva_cliente'));
+    }
      /**
     * @Route("/reserva/create", name="reserva_create")
     */
@@ -55,7 +65,7 @@ class ReservaController extends Controller
             $lista[$ob->getId()]=$ob->getNombre();
             }
 
-      //se crea el formulario
+            //se crea el formulario
             $rese=new reserva;
             $form=$this->createFormBuilder($rese)
             ->add('reservaFecha',DateType::class,array('label'=>'Fecha de reserva','attr' => array('class'=>'form-control','style'=>'margin-bottom:15px')))
@@ -69,20 +79,23 @@ class ReservaController extends Controller
 
       //Después de llenar el formulario
             if ($form->isSubmitted() && $form->isValid()) {
-             $rese->setReservaFecha($form['reservaFecha']->getData());
-             $rese->setReservaLugar($form['reservaLugar']->getData());
-             $cat = $this->getDoctrine()->getRepository(reserva_tipo_servicio::class)->find($form['reservaTipoId']->getData());
-             $rese->setreservaTipoId($cat);
-             $idr=$this->get('session')->get("id");
-             $rese->setidUsuario($idr);
-
-         /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-             $em=$this->getDoctrine()->getManager();
-             $em->persist($rese);
-             $em->flush();
-             $this->addFlash('notice','Reserva Agregada con éxito');
-             return $this->redirectToRoute('reserva_cliente');
-             }//fin
+                $rese->setReservaFecha($form['reservaFecha']->getData());
+                $rese->setReservaLugar($form['reservaLugar']->getData());
+                $cat = $this->getDoctrine()->getRepository(reserva_tipo_servicio::class)->find($form['reservaTipoId']->getData());
+                $rese->setreservaTipoId($cat);
+                $listado_servicio=$this->getDoctrine()->getRepository('AppBundle:Usuario')->findAll();
+            foreach($listado_servicio as $ob){
+            if($ob->getId()==$this->get('session')->get("id"))
+            $r=$ob;
+     }
+        $rese->setidUsuario($r);
+        /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+        $em=$this->getDoctrine()->getManager();
+        $em->persist($rese);
+        $em->flush();
+        $this->addFlash('notice','Reserva Agregada con éxito');
+       return $this->redirectToRoute('reserva_cliente');
+      }//fin
 
             return $this->render('reserva/agregar_reserva.html.twig',array('form' => $form->createView()));
 
