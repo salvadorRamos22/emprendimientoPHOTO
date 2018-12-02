@@ -32,6 +32,15 @@ class DefaultController extends Controller
         return 0;
     }
 
+    public function crearCategorias(){
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $categoria = $em->getRepository('AppBundle:Categoria')->findAll();
+        if(!$categoria){
+            
+        }
+    }
+
     /**
      * @Route("/admi", name="admi")
      */ 

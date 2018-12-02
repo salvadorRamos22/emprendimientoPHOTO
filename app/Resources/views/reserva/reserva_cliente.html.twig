@@ -30,9 +30,7 @@
         <td>{{lista.idUsuario}}</td>
         <td>{{lista.reservaTipoId}}</td>
         <td>
-        	<a href="{{ path('ver_reservas',{'id':lista.id}) }}" class="btn btn-info"><span class="nc-icon nc-badge"></span> Ver</a>
            <a href="{{ path('eliminarReserva',{'id':lista.id}) }}" class="btn btn-warning">Eliminar</a>
-        	<a href="" class="btn btn-success"><span class="nc-icon nc-paper"></span>Factura</a>
         </td>
       </tr>
   {% endfor %}
