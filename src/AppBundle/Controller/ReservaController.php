@@ -39,6 +39,19 @@ class ReservaController extends Controller
         }
         
     }
+     /**
+     * @Route("/cliente/reserva/{id}", name="ver_cli_reservas")
+     */
+    public function verReservaAction(Request $request,$id){
+        $em = $this->getDoctrine()->getEntityManager();
+        $reserva = $em->getRepository('AppBundle:reserva')->find($id);
+
+        $tipo = $reserva->getreservaTipoId();
+        $tipoReserva = $em->getRepository('AppBundle:reserva_tipo_servicio')->find($tipo);
+
+        return $this->render('reserva/ver_reserva_cliente.html.twig',['reserva'=>$reserva,'tipoReserva'=>$tipoReserva]);
+
+    }
 /**
      * @Route("/cliente/eliminar/{id}", name="eliminarReserva")
      */
@@ -131,7 +144,7 @@ class ReservaController extends Controller
           $em->persist($post);
           $flush = $em->flush();
 
-          return $this->render('reserva/tipo_reserva.html.twig');
+          return $this->redirectToRoute('reserva_tipoList');
         }
         return $this->render('reserva/tipo_reserva.html.twig');
 
